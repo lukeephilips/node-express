@@ -1,0 +1,31 @@
+{
+  "name": "express_tut",
+  "description": "",
+  "main": "index.js",
+  "authors": [
+    "Luke <luke.e.philips@gmail.com>"
+  ],
+  "license": "ISC",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "~3.2",
+    "jquery": "^3.3.1",
+    "font-awesome": "^4.7.0"
+  },
+  "overrides": {
+    "font-awesome": {
+      "main": [
+        "less/font-awesome.less",
+        "scss/font-awesome.scss",
+        "css/font-awesome.css"
+      ]
+    }
+  }
+}
