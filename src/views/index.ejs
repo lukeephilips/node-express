@@ -3,7 +3,7 @@
 	<head>
 		<meta http-equiv="content-type" content="text/html; charset=UTF-8">
 		<meta charset="utf-8">
-		<title>Storystrap Template</title>
+		<title><%= title %></title>
 		<meta name="generator" content="Bootply" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -16,10 +16,17 @@
 		<script src="/lib/bootstrap/dist/js/bootstrap.js"></script>
 		<!-- endbower -->
 
+		<!-- inject:css -->
+		<link rel="stylesheet" href="/css/styles.css">
+		<!-- endinject -->
+		<!-- inject:js -->
+		<script src="/js/scripts.js"></script>
+		<!-- endinject -->
+
+
 		<!--[if lt IE 9]>
 			<script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
 		<![endif]-->
-		<link href="css/styles.css" rel="stylesheet">
 	</head>
 	<body>
 <header class="navbar navbar-bright navbar-fixed-top" role="banner">
@@ -35,18 +42,11 @@
     </div>
     <nav class="collapse navbar-collapse" role="navigation">
       <ul class="nav navbar-nav">
-        <li>
-          <a href="#">Category</a>
-        </li>
-        <li>
-          <a href="#">Category</a>
-        </li>
-        <li>
-          <a href="#">Category</a>
-        </li>
-        <li>
-          <a href="#">Category</a>
-        </li>
+		    <% for (var i = 0; i < nav.length; i++) { %>
+		      <li>
+		        <a href=<%= nav[i].link %> ><%= nav[i].text %></a>
+		      </li>
+		      <% } %>
       </ul>
       <ul class="nav navbar-right navbar-nav">
         <li class="dropdown">
@@ -65,16 +65,11 @@
 <div id="masthead">
   <div class="container">
     <div class="row">
-      <div class="col-md-7">
-        <h1>Storystrap
-          <p class="lead"></p>
-        </h1>
-      </div>
       <div class="col-md-5">
         <div class="well well-lg">
           <div class="row">
             <div class="col-sm-12">
-
+							<h1><%= title %></h1>
 
             </div>
           </div>
