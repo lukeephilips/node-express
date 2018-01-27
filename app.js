@@ -1,7 +1,23 @@
 var express = require('express');
 var colors = require('colors');
-
 var app = express();
+
+// var sql = require('mssql');
+// const config = {
+//   user: 'luke',
+//   password: null,
+//   server: 'localhost:5432', // You can use 'localhost\\instance' to connect to named instance
+//   database: 'books',
+// };
+//
+// sql.connect(config, function(err) {
+//   console.log(err);
+// });
+
+const { Client } = require('pg');
+const connectionString = 'postgres://localhost:5432/books';
+const client = new Client(connectionString);
+
 var port = process.env.PORT;
 
 var nav = [{
