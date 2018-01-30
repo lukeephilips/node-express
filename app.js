@@ -2,21 +2,10 @@ var express = require('express');
 var colors = require('colors');
 var app = express();
 
-// var sql = require('mssql');
-// const config = {
-//   user: 'luke',
-//   password: null,
-//   server: 'localhost:5432', // You can use 'localhost\\instance' to connect to named instance
-//   database: 'books',
-// };
-//
-// sql.connect(config, function(err) {
-//   console.log(err);
-// });
-
 const { Client } = require('pg');
 const connectionString = 'postgres://localhost:5432/books';
-const client = new Client(connectionString);
+var client = new Client(connectionString);
+client.connect();
 
 var port = process.env.PORT;
 
@@ -28,8 +17,8 @@ var nav = [{
   text: 'Authors'
 }];
 
-var bookRouter = require('./src/routes/bookRoutes')(nav);
-var authorRouter = require('./src/routes/authorRoutes')(nav);
+var bookRouter = require('./src/routes/bookRoutes')(nav, client);
+var authorRouter = require('./src/routes/authorRoutes')(nav, client);
 
 app.use(express.static('public'));
 app.set('views', './src/views');
@@ -48,3 +37,5 @@ app.get('/', (req, res) => {
 app.listen(port, (err) => {
   console.log(colors.rainbow('running server on ' + port));
 });
+
+// module.exports = client;

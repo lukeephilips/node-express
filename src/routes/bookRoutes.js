@@ -1,16 +1,9 @@
 var express = require('express');
 var bookRouter = express.Router();
 
-const { Client } = require('pg');
-const connectionString = 'postgres://localhost:5432/books';
-const client = new Client(connectionString);
-
-var router = (nav) => {
+var router = (nav, client) => {
   bookRouter.route('/')
     .get((req, res) => {
-      console.log('ding');
-      client.connect();
-
       var dbValues = client.query(`SELECT * FROM books`, (error, result) => {
         res.render('books', {
           title: 'all the books',
@@ -23,10 +16,14 @@ var router = (nav) => {
   bookRouter.route('/:id')
     .get((req, res) => {
       var id = req.params.id;
-      res.render('book', {
-        title: books[id].title,
-        nav,
-        book: books[id]
+
+      var dbValues = client.query(`SELECT * FROM books
+        WHERE id= ${id}`, (error, result) => {
+        console.log(result.rows[0].title);
+        res.render('book', {
+          nav,
+          book: result.rows[0],
+        });
       });
     });
 
