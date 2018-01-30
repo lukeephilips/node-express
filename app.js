@@ -2,10 +2,13 @@ var express = require('express');
 var colors = require('colors');
 var app = express();
 
-const { Client } = require('pg');
 const connectionString = 'postgres://localhost:5432/books';
+const { Client } = require('pg');
 var client = new Client(connectionString);
 client.connect();
+
+// const Sequelize = require('sequelize');
+// const client = new Sequelize(connectionString);
 
 var port = process.env.PORT;
 
