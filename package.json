@@ -13,7 +13,8 @@
     "colors": "^1.1.2",
     "ejs": "^2.5.7",
     "express": "^4.16.2",
-    "jade": "^1.11.0"
+    "jade": "^1.11.0",
+    "mongodb": "^3.0.2"
   },
   "devDependencies": {
     "gulp": "^3.9.1",
