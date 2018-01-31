@@ -24,8 +24,7 @@ var router = (nav, client) => {
     .all(function(req, res, next) {
       var id = req.params.id;
 
-      var dbValues = client.query(`SELECT * FROM books
-        WHERE id= ${id}`, (error, result) => {
+      var dbValues = client.query(`SELECT book.*, author.name AS author from book, author where book.id = ${id} AND author.id = book.author_id`, (error, result) => {
         if (result.rows.length === 0) {
           res.status(404).send('Book not found');
         } else {
