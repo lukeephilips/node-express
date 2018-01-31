@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 // const { Client } = require('pg');
 // const connectionString = 'postgres://localhost:5432/books';
 // const client = new Client(connectionString);
@@ -10,29 +11,63 @@
 //     console.log(err ? err.stack : res.rows[0]);
 //   });
 // };
+=======
+const { Client } = require('pg');
+const connectionString = 'postgres://localhost:5432/books';
+const client = new Client(connectionString);
+
+client.connect();
+
+function queryDb(title, genre, read) {
+  client.query(`INSERT INTO books (title, genre, read)
+  VALUES ('${title}', '${genre}', ${read})`, (err, res) => {
+    console.log(err ? err.stack : res.rows[0]);
+  });
+};
+>>>>>>> sql
 
 var books = [
   {
     title: 'Hop on Pop',
     author: 'Dr. Seuss',
     genre: 'childrens',
+<<<<<<< HEAD
     read: false
+=======
+    read: false,
+    id: 0
+>>>>>>> sql
   }, {
     title: 'Cat in the Hat',
     author: 'Dr. Seuss',
     genre: 'childrens',
+<<<<<<< HEAD
     read: true
+=======
+    read: true,
+    id: 0
+>>>>>>> sql
   },
   {
     title: 'Game of Thrones',
     author: 'George RR Martin',
     genre: 'fantasy',
+<<<<<<< HEAD
     read: true
+=======
+    read: true,
+    id: 0
+>>>>>>> sql
   }, {
     title: 'A Feast for Crows',
     author: 'George RR Martin',
     genre: 'fantasy',
+<<<<<<< HEAD
     read: true
+=======
+    read: true,
+    id: 0
+>>>>>>> sql
   },
   {
     title: 'The Andromeda Strain',

@@ -6,50 +6,37 @@ var {
   MongoClient,
   ObjectId
 } = require('mongodb');
-
-var router = (nav) => {
-  bookRouter.route('/').get((req, res) => {
-
-    var url = 'mongodb://localhost:27017';
-    var dbName = 'libraryapp';
-
-    MongoClient.connect(url, (err, client) => {
-      if (err) {
-        console.log(err);
-      } else if (client) {
-        console.log(colors.green('CONNECTED'));
-      };
-      var db = client.db(dbName);
-      var collection = db.collection('books');
-      collection.find().toArray((err, results) => {
-        console.log(results[0]);
+var router = (nav, client) => {
+  bookRouter.route('/')
+    .get((req, res) => {
+      var dbValues = client.query(`SELECT * FROM books`, (error, result) => {
         res.render('books', {
-          title: 'all the books from mongo',
+          title: 'all the books',
           nav,
-          books: results
+          books: result.rows,
         });
       });
     });
-  });
+  };
 
-  bookRouter.route('/:id').get((req, res) => {
-    var id = new ObjectId(req.params.id);
+  bookRouter.route('/:id')
+    .all(function(req, res, next) {
+      var id = req.params.id;
 
-    var url = 'mongodb://localhost:27017';
-    var dbName = 'libraryapp';
-
-    MongoClient.connect(url, (err, client) => {
-      if (err) {
-        console.log(err);
-      } else if (client) {
-        console.log(colors.green('CONNECTED'));
-      };
-      var db = client.db(dbName);
-      var collection = db.collection('books');
-      collection.findOne({
-        _id: id
-      }, (err, results) => {
-        res.render('book', {nav, book: results});
+      var dbValues = client.query(`SELECT * FROM books
+        WHERE id= ${id}`, (error, result) => {
+        if (result.rows.length === 0) {
+          res.status(404).send('Book not found');
+        } else {
+          req.book = result.rows[0];
+          next();
+        }
+      });
+    })
+    .get((req, res) => {
+      res.render('book', {
+        nav,
+        book: req.book,
       });
     });
   });
