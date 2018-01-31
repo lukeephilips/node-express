@@ -32,19 +32,29 @@ var router = (nav) => {
   adminRouter.route('/addAuthor')
     .get((req, res) => {
       client.connect();
+      console.log('connected');
       function queryDb(author) {
+        console.log('SQL', author);
         client.query(`INSERT INTO authors (name)
-        VALUES ('${author}'`, (err, res) => {
+        VALUES ('${author}')`, (err, res) => {
           console.log(err ? err.stack : res.rows[0]);
         });
       };
-      addAuthor = () => {
-        books.forEach((book, i) => {
-          queryDb(book.author);
+      function removeDuplicatesBy(keyFn, array) {
+        var mySet = new Set();
+        return array.filter(function(x) {
+          var key = keyFn(x);
+          var isNew = !mySet.has(key);
+          if (isNew) {mySet.add(key);};
+          return isNew;
         });
-        client.close();
-      };
-      addAuthor();
+      }
+      var uniqueAuthors = removeDuplicatesBy(x => x.author, books);
+      uniqueAuthors.forEach((book, i) => {
+        queryDb(book.author);
+        console.log('querying', uniqueAuthors.author);
+      });
+
     });
   return adminRouter;
 };
