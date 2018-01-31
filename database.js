@@ -1,15 +1,15 @@
-// const { Client } = require('pg');
-// const connectionString = 'postgres://localhost:5432/books';
-// const client = new Client(connectionString);
-//
-// client.connect();
-//
-// function queryDb(title, genre, read) {
-//   client.query(`INSERT INTO books (title, genre, read)
-//   VALUES ('${title}', '${genre}', ${read})`, (err, res) => {
-//     console.log(err ? err.stack : res.rows[0]);
-//   });
-// };
+const { Client } = require('pg');
+const connectionString = 'postgres://localhost:5432/books';
+const client = new Client(connectionString);
+
+client.connect();
+
+function queryDb(author) {
+  client.query(`INSERT INTO authors (name)
+  VALUES ('${author}'`, (err, res) => {
+    console.log(err ? err.stack : res.rows[0]);
+  });
+};
 
 var books = [
   {
@@ -113,8 +113,11 @@ var books = [
     read: true
   }
 ];
-// books.forEach((book, i) => {
-//   // queryDb(book.title, book.genre, book.read);
-// });
+addAuthor = () => {
+  books.forEach((book, i) => {
+    queryDb(book.author);
+  });
+  client.close();
+};
 
 module.exports = books;

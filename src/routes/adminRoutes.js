@@ -3,6 +3,10 @@ var adminRouter = express.Router();
 var colors = require('colors');
 var { MongoClient } = require('mongodb');
 
+const { Client } = require('pg');
+const connectionString = 'postgres://localhost:5432/books';
+const client = new Client(connectionString);
+
 var books = require('../../database');
 
 var router = (nav) => {
@@ -24,6 +28,23 @@ var router = (nav) => {
           db.close();
         });
       });
+    });
+  adminRouter.route('/addAuthor')
+    .get((req, res) => {
+      client.connect();
+      function queryDb(author) {
+        client.query(`INSERT INTO authors (name)
+        VALUES ('${author}'`, (err, res) => {
+          console.log(err ? err.stack : res.rows[0]);
+        });
+      };
+      addAuthor = () => {
+        books.forEach((book, i) => {
+          queryDb(book.author);
+        });
+        client.close();
+      };
+      addAuthor();
     });
   return adminRouter;
 };
