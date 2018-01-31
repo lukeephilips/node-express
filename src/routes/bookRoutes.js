@@ -10,7 +10,8 @@ var colors = require('colors');
 var router = (nav, client) => {
   bookRouter.route('/')
     .get((req, res) => {
-      var dbValues = client.query(`SELECT * FROM books`, (error, result) => {
+      var dbValues = client.query(`SELECT book.*, author.name AS author FROM
+        book, author WHERE author.id = book.author_id;`, (error, result) => {
         res.render('books', {
           title: 'all the books',
           nav,

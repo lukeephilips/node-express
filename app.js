@@ -22,7 +22,7 @@ var nav = [{
 
 var bookRouter = require('./src/routes/bookRoutes')(nav, client);
 // var authorRouter = require('./src/routes/authorRoutes')(nav, client);
-// var adminRouter = require('./src/routes/adminRoutes')(nav, client);
+var adminRouter = require('./src/routes/adminRoutes')(nav, client);
 
 app.use(express.static('public'));
 app.set('views', './src/views');
@@ -30,7 +30,7 @@ app.set('view engine', 'ejs');
 
 app.use('/books', bookRouter);
 // app.use('/authors', authorRouter);
-// app.use('/admin', adminRouter);
+app.use('/admin', adminRouter);
 
 app.get('/', (req, res) => {
   res.render('index', {
