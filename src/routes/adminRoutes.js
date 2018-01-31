@@ -9,7 +9,7 @@ const client = new Client(connectionString);
 
 var books = require('../../database');
 
-var router = (nav) => {
+var router = (nav, client) => {
   adminRouter.route('/addBooks')
     .get((req, res) => {
       var url = 'mongodb://localhost:27017';
