@@ -2,21 +2,23 @@ var express = require('express');
 var bookRouter = express.Router();
 
 var colors = require('colors');
-// var {
-//   MongoClient,
-//   ObjectId
-// } = require('mongodb');
+var {
+  MongoClient,
+  ObjectId
+} = require('mongodb');
 
 var router = (nav, client) => {
   bookRouter.route('/')
     .get((req, res) => {
       var dbValues = client.query(`SELECT book.*, author.name AS author FROM
         book, author WHERE author.id = book.author_id;`, (error, result) => {
-        res.render('books', {
-          title: 'all the books',
-          nav,
-          books: result.rows,
-        });
+          
+        } => {
+          res.render('books', {
+            title: 'all the books',
+            nav,
+            books: result.rows,
+          });
       });
     });
 

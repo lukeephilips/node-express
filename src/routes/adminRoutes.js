@@ -10,25 +10,26 @@ const client = new Client(connectionString);
 var books = require('../../database');
 
 var router = (nav, client) => {
-  // adminRouter.route('/addTags')
-  //   .get((req, res) => {
-  //     var url = 'mongodb://localhost:27017';
-  //     var dbName = 'libraryapp';
-  //     MongoClient.connect(url, (err, client) => {
-  //       if (err) {
-  //         console.log(err);
-  //       } else if (client) {
-  //         console.log(colors.green('CONNECTED'));
-  //       };
-  //
-  //       var db = client.db(dbName);
-  //       var collection = db.collection('books');
-  //       collection.insertMany(books, (err, results) => {
-  //         res.send(results);
-  //         db.close();
-  //       });
-  //     });
-  //   });
+  adminRouter.route('/addTags')
+    .get((req, res) => {
+      var url = 'mongodb://localhost:27017';
+      var dbName = 'libraryapp';
+      MongoClient.connect(url, (err, client) => {
+        if (err) {
+          console.log(err);
+        } else if (client) {
+          console.log(colors.green('CONNECTED'));
+        };
+
+        var db = client.db(dbName);
+        var collection = db.collection('tags');
+        var book_tags = books.map(function(b) {return {title: b.title, tags: b.tags}});
+        collection.insertMany(book_tags, (err, results) => {
+          res.send(results);
+          db.close();
+        });
+      });
+    });
 
   adminRouter.route('/addBooks')
     .get((req, res) => {
