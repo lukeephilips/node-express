@@ -7,16 +7,17 @@ var colors = require('colors');
 //   ObjectId
 // } = require('mongodb');
 
-var router = (nav) => {
+var router = (nav, client) => {
   bookRouter.route('/')
     .get((req, res) => {
-      var dbValues = client.query(`SELECT * FROM books`, (error, result) => {
-        res.render('books', {
-          title: 'all the books',
-          nav,
-          books: result.rows,
-        });
-      });
+      // var dbValues = client.query(`SELECT * FROM books`, (error, result) => {
+      //   res.render('books', {
+      //     title: 'all the books',
+      //     nav,
+      //     books: result.rows,
+      //   });
+      // });
+      res.send('ding dong');
     });
 
   // bookRouter.route('/:id')

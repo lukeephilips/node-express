@@ -20,7 +20,7 @@ var nav = [{
   text: 'Authors'
 }];
 
-var bookRouter = require('./src/routes/bookRoutes')(nav);
+var bookRouter = require('./src/routes/bookRoutes')(nav, client);
 // var authorRouter = require('./src/routes/authorRoutes')(nav, client);
 // var adminRouter = require('./src/routes/adminRoutes')(nav, client);
 
@@ -43,4 +43,4 @@ app.listen(port, (err) => {
   console.log(colors.rainbow('running server on ' + port));
 });
 
-// module.exports = client;
+module.exports = client;
