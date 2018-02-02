@@ -1,18 +1,16 @@
 var express = require('express');
 var bookRouter = express.Router();
-
 var colors = require('colors');
 
 var url = 'mongodb://localhost:27017';
 var dbName = 'libraryapp';
-
 var {
   MongoClient,
   ObjectId
 } = require('mongodb');
 
 var router = (nav, client) => {
-  bookRouter.route('/').get((req, res) => {
+  bookRouter.route('/').get((req, res, next) => {
     var dbValues = client.query(`SELECT book.*, author.name AS author FROM
         book, author WHERE author.id = book.author_id;`, (error, result) => {
 
@@ -32,16 +30,18 @@ var router = (nav, client) => {
             });
           };
 
-          var combined = mongoResults.map((r) => {
+          req.books = mongoResults.map((r) => {
             return Object.assign({}, findBook(r.title), r);
           });
-          res.render('books', {
-            title: 'all the books',
-            nav,
-            books: combined
-          });
+          next();
         });
       });
+    });
+  }).get((req, res) => {
+    res.render('books', {
+      title: 'all the books',
+      nav,
+      books: req.books
     });
   });
 
@@ -64,28 +64,15 @@ var router = (nav, client) => {
           };
 
           var db = client.db(dbName);
-          console.log(db);
-          // var mongoItem = db.collection.find({});
-        //   var booksArray = mongoCollection.find().toArray((err, mongoResults) => {
-        //     findBook = (mongoVal) => {
-        //       return result.rows.find((sqlVal) => {
-        //         return mongoVal === sqlVal.title;
-        //       });
-        //     };
-        //
-        //     var combined = mongoResults.map((r) => {
-        //       return Object.assign({}, findBook(r.title), r);
-        //     });
-        //     res.render('book', {
-        //       title: 'all the books',
-        //       nav,
-        //       books: combined
-        //     });
-        //   });
+          var collection = db.collection('tags');
+          var mongoItem = collection.findOne({
+            'title': result.rows[0].title
+          }, (err, mongoResult) => {
+            var test = Object.assign({}, result.rows[0], mongoResult);
+            req.book = test;
+            next();
+          });
         });
-
-        req.book = result.rows[0];
-        next();
       }
     });
   }).get((req, res) => {

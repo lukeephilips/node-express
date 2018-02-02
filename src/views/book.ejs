@@ -106,7 +106,9 @@
 
 	              <div class="row">
 	                <div class="col-xs-9">
-	                  <h4><span class="label label-default"><%= book.genre %></span></h4><h4>
+										<% for (var j = 0; j < book.tags.length; j++) { %>
+											<h4><span class="label label-default"><%= book.tags[j] %></span></h4><h4>
+										<% } %>
 	                  <small style="font-family:courier,'new courier';" class="text-muted">2 hours ago</small>
 	                  </h4></div>
 	                <div class="col-xs-3"></div>
