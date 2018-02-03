@@ -102,7 +102,7 @@
 	            </div>
 	            <div class="col-md-10 col-sm-9">
 	              <h3><%= books[i].title %></h3>
-								<h4><%= books[i].author %></h4>
+								<h4><a href="/authors/<%= books[i].author_id %>"><%= books[i].author %></a></h4>
 	              <div class="row">
 	                <div class="col-xs-9">
 										<% for (var j = 0; j < books[i].tags.length; j++) { %>
