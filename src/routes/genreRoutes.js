@@ -45,7 +45,7 @@ var router = (nav, client) => {
   //   });
   // });
 
-  genreRouter.route('/:genre_id').all(function(req, res, next) {
+  genreRouter.route('/:genre').all(function(req, res, next) {
     var genre = req.params.genre;
 
     MongoClient.connect(url, (err, client) => {
@@ -57,9 +57,15 @@ var router = (nav, client) => {
 
       var db = client.db(dbName);
       var collection = db.collection('tags');
-      var books = collection.find({'tags': genre});
-      console.log(books);
-      res.render('genre', {nav, books: books, genre: genre});
+      console.log('genre', genre);
+      var books = collection.find({'tags': genre}).toArray((err, results) => {
+        if (err) {
+          console.log(err);
+        }
+        res.render('genre', {
+          nav, books: results , genre: genre
+        });
+      });
     });
   });
   return genreRouter;
