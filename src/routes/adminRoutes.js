@@ -36,7 +36,7 @@ var router = (nav, client) => {
             });
           };
           var bookTags = books.map(function(b) {
-            var obj = Object.assign({}, findBook(b), {tags: b.tags});
+            var obj = Object.assign({}, {title: findBook(b).title, id: findBook(b).id}, {tags: b.tags});
             return obj;
           });
           console.log(bookTags, 'ZZZZZZZZZZZZ');
