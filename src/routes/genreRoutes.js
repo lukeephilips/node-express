@@ -53,11 +53,10 @@ var router = (nav, client) => {
         console.log('EROR', err);
       } else if (client) {
         console.log(colors.green('CONNECTED'));
-      };
+      }
 
       var db = client.db(dbName);
       var collection = db.collection('tags');
-      console.log('genre', genre);
       var books = collection.find({'tags': genre}).toArray((err, results) => {
         if (err) {
           console.log(err);

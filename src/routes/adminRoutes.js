@@ -25,18 +25,19 @@ var router = (nav, client) => {
             console.log(err);
           } else if (client) {
             console.log(colors.green('CONNECTED'));
-          };
+          }
 
           var db = client.db(dbName);
           var collection = db.collection('tags');
 
-          findBook = (mongoVal) => {
+          var findBook = (mongoVal) => {
             return result.rows.find((sqlVal) => {
               return mongoVal.title === sqlVal.title;
             });
           };
           var bookTags = books.map(function(b) {
-            var obj = Object.assign({}, {title: findBook(b).title, id: findBook(b).id}, {tags: b.tags});
+            var obj = Object.assign({},
+              {title: findBook(b).title, id: findBook(b).id}, {tags: b.tags});
             return obj;
           });
           console.log(bookTags, 'ZZZZZZZZZZZZ');
@@ -55,11 +56,12 @@ var router = (nav, client) => {
         console.log('SQL', book.title);
         client.query(
           `INSERT INTO book (title, author_id, read)
-          VALUES ('${book.title}', '${book.author_id}', '${book.read}')`
-        , (err, res) => {
+          VALUES ('${book.title}', '${book.author_id}',
+          '${book.read}')`,
+          (err, res) => {
           console.log(err ? err.stack : res.rows[0]);
         });
-      };
+      }
       books.forEach((book, i) => {
         queryDb(book);
         console.log('querying', book.title);
@@ -76,13 +78,13 @@ var router = (nav, client) => {
         VALUES ('${author}')`, (err, res) => {
           console.log(err ? err.stack : res.rows[0]);
         });
-      };
+      }
       function removeDuplicatesBy(keyFn, array) {
         var mySet = new Set();
         return array.filter(function(x) {
           var key = keyFn(x);
           var isNew = !mySet.has(key);
-          if (isNew) {mySet.add(key);};
+          if (isNew) {mySet.add(key);}
           return isNew;
         });
       }

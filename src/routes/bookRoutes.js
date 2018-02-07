@@ -15,16 +15,10 @@ var router = (nav, client) => {
         book, author WHERE author.id = book.author_id;`, (error, result) => {
 
       MongoClient.connect(url, (err, client) => {
-        if (err) {
-          console.log('EROR', err);
-        } else if (client) {
-          console.log(colors.green('CONNECTED'));
-        };
-
         var db = client.db(dbName);
         var mongoCollection = db.collection('tags');
         var booksArray = mongoCollection.find().toArray((err, mongoResults) => {
-          findBook = (mongoVal) => {
+          var findBook = (mongoVal) => {
             return result.rows.find((sqlVal) => {
               return mongoVal === sqlVal.title;
             });
@@ -50,8 +44,8 @@ var router = (nav, client) => {
 
     var dbValues = client.query(
       `SELECT book.*, author.name AS author from book, author
-      where book.id = ${id} AND author.id = book.author_id`
-      , (error, result) => {
+      where book.id = ${id} AND author.id = book.author_id`,
+       (error, result) => {
       if (result.rows.length === 0) {
         res.status(404).send('Book not found');
       } else {
@@ -61,7 +55,7 @@ var router = (nav, client) => {
             console.log('EROR', err);
           } else if (client) {
             console.log(colors.green('CONNECTED'));
-          };
+          }
 
           var db = client.db(dbName);
           var collection = db.collection('tags');
