@@ -8,6 +8,7 @@ module.exports = (client) => {
     passwordField: 'password'
   },
   (username, password, done) => {
+    console.log('local');
     var sqlPassword = client.query(
       `SELECT * FROM lib_user
       WHERE username = '${username}'`, (error, result) => {

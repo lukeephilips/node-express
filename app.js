@@ -46,7 +46,6 @@ app.use('/admin', adminRouter);
 app.use('/auth', authRouter);
 
 app.get('/', (req, res) => {
-  // res.redirect('/books');
   res.render('index', {
     title: 'Welcome',
     nav

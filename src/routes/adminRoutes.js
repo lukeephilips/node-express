@@ -12,6 +12,13 @@ const client = new Client(connectionString);
 var books = require('../../database');
 
 var router = (nav, client) => {
+  adminRouter.use((req, res, next) => {
+    if (!req.user) {
+      res.redirect('/');
+    }
+    next();
+  });
+
   adminRouter.route('/addTags')
     .get((req, res) => {
       var sqlValues = client.query(
