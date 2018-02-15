@@ -22,7 +22,7 @@ var authController = (authService, nav, client) => {
   };
   var signIn = function(req, res) {
     console.log('ding');
-    passport.authenticate('local', {
+    passport.authenticate('local',  {
       failureRedirect: '/'
     }, (req, res) => {
       console.log('dong');

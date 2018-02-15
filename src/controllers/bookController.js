@@ -22,10 +22,10 @@ var bookController = (bookService, nav, client) => {
                 return mongoVal === sqlVal.title;
               });
             };
-
             req.books = mongoResults.map((r) => {
               return Object.assign({}, findBook(r.title), r);
             });
+            console.log(req.books[0]);
             res.render('books', {
               title: 'all the books',
               nav,
@@ -45,7 +45,7 @@ var bookController = (bookService, nav, client) => {
       if (result.rows.length === 0) {
         res.status(404).send('Book not found');
       } else {
-
+        var sqlBook = result.rows[0];
         MongoClient.connect(url, (err, client) => {
           if (err) {
             console.log('EROR', err);
@@ -56,12 +56,13 @@ var bookController = (bookService, nav, client) => {
           var db = client.db(dbName);
           var collection = db.collection('tags');
           var mongoItem = collection.findOne({
-            'title': result.rows[0].title
+            'title': sqlBook.title
           }, (err, mongoResult) => {
-            var test = Object.assign({}, result.rows[0], mongoResult);
-            req.book = test;
-            res.render('book', {
-              nav, book: req.book
+            bookService.getBookById(sqlBook.goodreads_id, (err, r) => {
+              req.book = Object.assign({}, sqlBook, mongoResult, r);
+              res.render('book', {
+                nav, book: req.book
+              });
             });
           });
         });

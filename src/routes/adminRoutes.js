@@ -1,5 +1,7 @@
 // jscs:disable requireCamelCaseOrUpperCaseIdentifiers
 
+// var https = require('https');
+
 var express = require('express');
 var adminRouter = express.Router();
 var colors = require('colors');
@@ -10,12 +12,12 @@ const connectionString = 'postgres://localhost:5432/books';
 const client = new Client(connectionString);
 
 var books = require('../../database');
-
+var bookService = require('../services/goodreadsService')();
 var router = (nav, client) => {
   adminRouter.use((req, res, next) => {
-    if (!req.user) {
-      res.redirect('/');
-    }
+    // if (!req.user) {
+    //   res.redirect('/');
+    // }
     next();
   });
 
@@ -59,19 +61,23 @@ var router = (nav, client) => {
     .get((req, res) => {
       client.connect();
       console.log('connected');
-      function queryDb(book) {
-        console.log('SQL', book.title);
-        client.query(
-          `INSERT INTO book (title, author_id, read)
-          VALUES ('${book.title}', '${book.author_id}',
-          '${book.read}')`,
-          (err, res) => {
-          console.log(err ? err.stack : res.rows[0]);
-        });
-      }
       books.forEach((book, i) => {
-        queryDb(book);
-        console.log('querying', book.title);
+        bookService.getBookByTitle(book.title, (e, r) => {
+          console.log('querying', book.title);
+          book.goodreads_id = r.goodreads_id;
+          book.image_url = r.image_url;
+
+
+          console.log('Query SQL', book.title);
+          client.query(
+            `INSERT INTO book (title, author_id, goodreads_id, image_url, read)
+            VALUES ('${book.title}', '${book.author_id}', '${book.goodreads_id}',
+            '${book.image_url}',
+            '${book.read}')`,
+            (err, res) => {
+            console.log(err ? err.stack : res.rows[0]);
+          });
+        });
       });
     });
 

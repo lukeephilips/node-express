@@ -3,8 +3,10 @@ var bookRouter = express.Router();
 var colors = require('colors');
 
 var router = (nav, client) => {
+  var bookService = require('../services/goodreadsService')();
+  console.log(bookService.ping());
   var bookController = require('../controllers/bookController')
-  (null, nav, client);
+  (bookService, nav, client);
 
   bookRouter.route('/')
     .get(bookController.getIndex);
